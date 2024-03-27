@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: schoolmanagement
+  datasource:
+    url: jdbc:postgresql://localhost:5437/demo?schema=public
+    username: my_user
+    password: my_password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
