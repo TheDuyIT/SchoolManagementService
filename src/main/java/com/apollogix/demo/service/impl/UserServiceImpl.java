@@ -4,8 +4,8 @@ import com.apollogix.demo.domain.Role;
 import com.apollogix.demo.mapper.RegisterRequestMapper;
 import com.apollogix.demo.repository.UserInfoRepository;
 import com.apollogix.demo.service.UserService;
-import com.apollogix.demo.web.model.RegisterRequest;
-import com.apollogix.demo.web.model.RoleAssignmentRequest;
+import com.apollogix.web.rest.model.AuthenticationRequest;
+import com.apollogix.web.rest.model.RoleAssignmentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserInfoRepository userInfoRepository;
 
     @Override
-    public UserDetails register(RegisterRequest request) {
+    public UserDetails register(AuthenticationRequest request) {
         var user = registerRequestMapper.toUserInfo(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.STUDENT); // default user role
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails assignRole(RoleAssignmentRequest request) {
         var userInfoOptional = userInfoRepository.findById(request.getUserId());
         var user = userInfoOptional.orElseThrow();
-        user.setRole(request.getRole());
+        user.setRole(Enum.valueOf(Role.class, request.getRole().getValue()));
         user = userInfoRepository.save(user);
         return user;
     }

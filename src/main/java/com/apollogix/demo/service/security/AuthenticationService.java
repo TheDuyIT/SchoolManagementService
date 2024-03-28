@@ -2,9 +2,8 @@ package com.apollogix.demo.service.security;
 
 import com.apollogix.demo.repository.UserInfoRepository;
 import com.apollogix.demo.service.UserService;
-import com.apollogix.demo.web.model.AuthenticationRegister;
-import com.apollogix.demo.web.model.AuthenticationResponse;
-import com.apollogix.demo.web.model.RegisterRequest;
+import com.apollogix.web.rest.model.AuthenticationRequest;
+import com.apollogix.web.rest.model.AuthenticationResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +20,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    public AuthenticationResponse authenticate(AuthenticationRegister request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
@@ -31,7 +30,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(AuthenticationRequest request) {
         var user = userService.register(request);
         return AuthenticationResponse.builder()
                 .token(jwtService.generateToken(user))

@@ -1,0 +1,152 @@
+openapi: '3.0.3'
+info:
+  title: 'Demo School Management Apis'
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Development server
+security:
+  - bearerAuth: [ ]
+paths:
+  /actuator/health:
+    get:
+      description: Get health status of backend service
+      operationId: actuatorHealth
+      security: []
+      tags:
+        - 'actuator'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponseDto'
+  /api/v1/hello/teacher:
+    get:
+      description: sayHelloTeacher
+      operationId: sayHelloTeacher
+      tags:
+        - 'hello-v1'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/v1/hello/student:
+    get:
+      description: sayHelloStudent
+      operationId: sayHelloStudent
+      tags:
+        - 'hello-v1'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/v1/auth:
+    post:
+      description: auth
+      operationId: doAuthenticate
+      tags:
+        - 'auth-v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+  /api/v1/auth/register:
+    post:
+      description: do register
+      operationId: doRegister
+      tags:
+        - 'auth-v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    HealthResponseDto:
+      type: object
+      properties:
+        status:
+          type: string
+    AuthenticationRequest:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: "#/components/schemas/Role"
+        password:
+          type: string
+    AuthenticationResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    RoleAssignmentRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        role:
+          $ref: "#/components/schemas/Role"
+    Role:
+      type: string
+      enum:
+        - TEACHER
+        - STUDENT

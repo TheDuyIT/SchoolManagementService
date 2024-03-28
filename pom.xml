@@ -23,6 +23,13 @@
         <commons-collections4.version>4.4</commons-collections4.version>
         <problem.version>0.29.1</problem.version>
         <datatype-problem.version>0.27.1</datatype-problem.version>
+        <springdoc-openapi.version>2.2.0</springdoc-openapi.version>
+        <swagger-v3.version>2.2.15</swagger-v3.version>
+        <jackson-databind-nullable.version>0.2.4</jackson-databind-nullable.version>
+        <jsoup.version>1.17.2</jsoup.version>
+
+        <!-- Plugin versions -->
+        <openapi-generator-maven-plugin.version>7.3.0</openapi-generator-maven-plugin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -103,6 +110,38 @@
             <version>${problem.version}</version>
         </dependency>
 
+        <!-- OpenAPI Generator -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations-jakarta</artifactId>
+            <version>${swagger-v3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>jackson-datatype-problem</artifactId>
+            <version>${datatype-problem.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+            <version>${springdoc-openapi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+
         <!-- Testing-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -129,6 +168,50 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/swagger/api.yaml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>${project.groupId}.web.rest.api</apiPackage>
+                            <modelPackage>${project.groupId}.web.rest.model</modelPackage>
+                            <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                            <skipValidateSpec>false</skipValidateSpec>
+                            <importMappings>
+                                <importMapping>Problem=org.zalando.problem.Problem</importMapping>
+                                <importMapping>Pageable=org.springframework.data.domain.Pageable</importMapping>
+                                <importMapping>
+                                </importMapping>
+                            </importMappings>
+                            <configOptions>
+                                <title>school-management-service</title>
+                                <useTags>true</useTags>
+                                <delegatePattern>true</delegatePattern>
+                                <dateLibrary>java17</dateLibrary>
+                                <library>spring-boot</library>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <serializableModel>true</serializableModel>
+                                <useBeanValidation>true</useBeanValidation>
+                                <additionalModelTypeAnnotations>
+                                    @lombok.Builder
+                                    @lombok.AllArgsConstructor
+                                    @lombok.NoArgsConstructor
+                                    @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+                                </additionalModelTypeAnnotations>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
