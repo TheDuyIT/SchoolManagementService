@@ -1,6 +1,5 @@
 package com.apollogix.demo.service.security;
 
-import com.apollogix.demo.mapper.RegisterRequestMapper;
 import com.apollogix.demo.repository.UserInfoRepository;
 import com.apollogix.demo.service.UserService;
 import com.apollogix.demo.web.model.AuthenticationRegister;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,8 +18,6 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final UserInfoRepository userInfoRepository;
-    private final RegisterRequestMapper registerRequestMapper;
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
