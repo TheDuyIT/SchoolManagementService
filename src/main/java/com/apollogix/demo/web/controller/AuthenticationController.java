@@ -1,11 +1,13 @@
 package com.apollogix.demo.web.controller;
 
+import com.apollogix.demo.config.AuthoritiesConstants;
 import com.apollogix.demo.service.security.AuthenticationService;
 import com.apollogix.demo.web.model.AuthenticationRegister;
 import com.apollogix.demo.web.model.AuthenticationResponse;
 import com.apollogix.demo.web.model.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,9 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     @PostMapping("/register")
+    @Secured({
+            AuthoritiesConstants.TEACHER
+    })
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(authenticationService.register(request));
     }

@@ -1,5 +1,6 @@
 package com.apollogix.demo.web.model;
 
+import com.apollogix.demo.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @NonNull
-public class RegisterRequest {
-    private String firstname;
-    private String lastname;
-    private String email;
-    private String password;
+public class RoleAssignmentRequest {
+    private Long userId;
+    private Role role;
 }
