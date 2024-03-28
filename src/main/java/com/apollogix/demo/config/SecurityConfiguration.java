@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize ->
                         // prettier-ignore
                         authorize
+                                .requestMatchers(mvc.pattern("/")).permitAll()
                                 .requestMatchers(mvc.pattern("/api/v1/auth")).permitAll()
                                 .requestMatchers(mvc.pattern("/actuator/health")).permitAll()
                                 .requestMatchers(mvc.pattern("/actuator/health/**")).permitAll()

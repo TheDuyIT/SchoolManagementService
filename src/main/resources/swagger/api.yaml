@@ -108,6 +108,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationResponse'
+
+  /api/v1/user:
+    get:
+      description: get users by criteria
+      operationId: getUserByCriteria
+      tags:
+        - 'user-v1'
+      parameters:
+        - name: criteria
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/UserCriteria'
+        - $ref: '#/components/parameters/pageable'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponsePaginatedDTO'
   /api/v1/user/assign-role:
     post:
       description: do assign role for user
@@ -137,7 +164,61 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    pageable:
+      name: pageable
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Pageable'
   schemas:
+    RestResponse:
+      title: RestResponse
+      type: object
+      properties:
+        correlationId:
+          type: string
+        errorCode:
+          type: string
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        succeeded:
+          type: boolean
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalItem:
+          type: integer
+          format: int64
+    Pageable:
+      type: object
+      description: This object will be overridden by Spring's Pageable
+      properties:
+        page:
+          type: integer
+          default: 0
+        size:
+          type: integer
+          default: 10
+        sort:
+          type: array
+          items:
+            type: string
+          example: createdAt,DESC
     HealthResponseDto:
       type: object
       properties:
@@ -156,6 +237,16 @@ components:
           $ref: "#/components/schemas/Role"
         password:
           type: string
+    UserResponsePaginatedDTO:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/RestResponse'
+        - type: object
+          properties:
+            payload:
+              type: array
+              items:
+                $ref: "#/components/schemas/UserResponseDTO"
     UserResponseDTO:
       type: object
       properties:
@@ -167,6 +258,25 @@ components:
           type: string
         role:
           $ref: "#/components/schemas/Role"
+    UserCriteria:
+      type: object
+      properties:
+        firstname:
+          type: array
+          items:
+            type: string
+        lastname:
+          type: array
+          items:
+            type: string
+        email:
+          type: array
+          items:
+            type: string
+        role:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
     AuthenticationResponse:
       type: object
       properties:
