@@ -108,6 +108,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationResponse'
+  /api/v1/user/assign-role:
+    post:
+      description: do assign role for user
+      operationId: assignRoleUsingPost
+      tags:
+        - 'user-v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleAssignmentRequest'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDTO'
 components:
   securitySchemes:
     bearerAuth:
@@ -132,6 +156,17 @@ components:
           $ref: "#/components/schemas/Role"
         password:
           type: string
+    UserResponseDTO:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: "#/components/schemas/Role"
     AuthenticationResponse:
       type: object
       properties:

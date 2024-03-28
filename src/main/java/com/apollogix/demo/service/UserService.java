@@ -1,12 +1,12 @@
 package com.apollogix.demo.service;
 
+import com.apollogix.demo.domain.UserInfo;
 import com.apollogix.web.rest.model.AuthenticationRequest;
 import com.apollogix.web.rest.model.RoleAssignmentRequest;
-import org.springframework.security.core.userdetails.UserDetails;
 
 
 public interface UserService {
-    UserDetails register(AuthenticationRequest request);
+    UserInfo register(AuthenticationRequest request);
 
-    UserDetails assignRole(RoleAssignmentRequest request);
+    UserInfo assignRole(RoleAssignmentRequest request);
 }
