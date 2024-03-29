@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,8 @@ import lombok.RequiredArgsConstructor;
 public class Question extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorQuestion")
+    @SequenceGenerator(name = "sequenceGeneratorQuestion", sequenceName = "sequence_generator_question", allocationSize = 50,initialValue = 50)
     private Long id;
 
     @Column(nullable = false)
@@ -38,5 +40,5 @@ public class Question extends BaseEntity {
     private String answerD;
 
     @Column(name = "correct_answer", nullable = false)
-    private String correctAnswer;
+    private int correctAnswer;
 }
