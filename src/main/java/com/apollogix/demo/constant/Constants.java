@@ -8,4 +8,5 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Constants {
     public final String SLASH = "/";
+    public final String SYSTEM = "SYSTEM";
 }

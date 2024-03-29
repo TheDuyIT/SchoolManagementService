@@ -27,7 +27,7 @@ import java.util.Set;
 @Table
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Examination {
+public class Examination extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

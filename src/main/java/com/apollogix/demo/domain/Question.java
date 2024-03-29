@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Table
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Question {
+public class Question extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
