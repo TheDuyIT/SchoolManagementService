@@ -1,0 +1,297 @@
+openapi: '3.0.3'
+info:
+  title: 'Demo School Management Apis'
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Development server
+security:
+  - bearerAuth: [ ]
+paths:
+  /actuator/health:
+    get:
+      description: Get health status of backend service
+      operationId: actuatorHealth
+      security: []
+      tags:
+        - 'actuator'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponseDto'
+  /api/v1/hello/teacher:
+    get:
+      description: sayHelloTeacher
+      operationId: sayHelloTeacher
+      tags:
+        - 'hello-v1'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/v1/hello/student:
+    get:
+      description: sayHelloStudent
+      operationId: sayHelloStudent
+      tags:
+        - 'hello-v1'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/v1/auth:
+    post:
+      description: auth
+      operationId: doAuthenticate
+      tags:
+        - 'auth-v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+  /api/v1/auth/register:
+    post:
+      description: do register
+      operationId: doRegister
+      tags:
+        - 'auth-v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+
+  /api/v1/user:
+    get:
+      description: get users by criteria
+      operationId: getUserByCriteria
+      tags:
+        - 'user-v1'
+      parameters:
+        - name: criteria
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/UserCriteria'
+        - $ref: '#/components/parameters/pageable'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponsePaginatedDTO'
+  /api/v1/user/assign-role:
+    post:
+      description: do assign role for user
+      operationId: assignRoleUsingPost
+      tags:
+        - 'user-v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleAssignmentRequest'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDTO'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    pageable:
+      name: pageable
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Pageable'
+  schemas:
+    RestResponse:
+      title: RestResponse
+      type: object
+      properties:
+        correlationId:
+          type: string
+        errorCode:
+          type: string
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        succeeded:
+          type: boolean
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalItem:
+          type: integer
+          format: int64
+    Pageable:
+      type: object
+      description: This object will be overridden by Spring's Pageable
+      properties:
+        page:
+          type: integer
+          default: 0
+        size:
+          type: integer
+          default: 10
+        sort:
+          type: array
+          items:
+            type: string
+          example: createdAt,DESC
+    HealthResponseDto:
+      type: object
+      properties:
+        status:
+          type: string
+    AuthenticationRequest:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: "#/components/schemas/Role"
+        password:
+          type: string
+    UserResponsePaginatedDTO:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/RestResponse'
+        - type: object
+          properties:
+            payload:
+              type: array
+              items:
+                $ref: "#/components/schemas/UserResponseDTO"
+    UserResponseDTO:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: "#/components/schemas/Role"
+    UserCriteria:
+      type: object
+      properties:
+        firstname:
+          type: array
+          items:
+            type: string
+        lastname:
+          type: array
+          items:
+            type: string
+        email:
+          type: array
+          items:
+            type: string
+        role:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
+    AuthenticationResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    RoleAssignmentRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        role:
+          $ref: "#/components/schemas/Role"
+    Role:
+      type: string
+      enum:
+        - TEACHER
+        - STUDENT
