@@ -5,8 +5,5 @@ import com.apollogix.web.rest.model.UserResponseDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface UserResponseDTOMapper {
-    UserInfo toUserInfo(UserResponseDTO source);
-
-    UserResponseDTO toUserResponse(UserInfo source);
+public interface UserResponseDTOMapper extends EntityMapper<UserResponseDTO, UserInfo>{
 }
