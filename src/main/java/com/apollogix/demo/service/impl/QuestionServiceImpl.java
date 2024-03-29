@@ -9,12 +9,14 @@ import com.apollogix.demo.web.errors.BadRequestException;
 import com.apollogix.web.rest.model.QuestionCriteria;
 import com.apollogix.web.rest.model.QuestionRequestDTO;
 import com.apollogix.web.rest.model.QuestionResponseDTO;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
 

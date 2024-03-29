@@ -11,6 +11,7 @@ import com.apollogix.demo.web.errors.BadRequestException;
 import com.apollogix.web.rest.model.AuthenticationRequest;
 import com.apollogix.web.rest.model.RoleAssignmentRequest;
 import com.apollogix.web.rest.model.UserCriteria;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final RegisterRequestMapper registerRequestMapper;
