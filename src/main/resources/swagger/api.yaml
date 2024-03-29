@@ -208,6 +208,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuestionResponseDTO'
+  /api/v1/examination:
+    post:
+      description: create examination
+      operationId: createExaminationUsingPost
+      tags:
+        - 'examination-v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExaminationRequestDTO'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExaminationResponseDTO'
 components:
   securitySchemes:
     bearerAuth:
@@ -410,3 +434,33 @@ components:
           type: array
           items:
             type: string
+
+    ExaminationBaseDTO:
+      type: object
+      properties:
+        title:
+          type: string
+        durationInMinute:
+          type: integer
+          format: int43
+
+    ExaminationRequestDTO:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ExaminationBaseDTO"
+        - type: object
+          properties:
+            questions:
+              type: array
+              items:
+                $ref: "#/components/schemas/BaseDTO"
+    ExaminationResponseDTO:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ExaminationBaseDTO"
+        - type: object
+          properties:
+            questions:
+              type: array
+              items:
+                $ref: "#/components/schemas/QuestionResponseDTO"
