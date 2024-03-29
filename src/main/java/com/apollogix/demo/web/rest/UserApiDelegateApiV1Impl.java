@@ -29,7 +29,7 @@ public class UserApiDelegateApiV1Impl implements UserV1ApiDelegate {
     public ResponseEntity<UserResponseDTO> assignRoleUsingPost(RoleAssignmentRequest roleAssignmentRequest) {
         var userDetails = userService.assignRole(roleAssignmentRequest);
         return ResponseEntity.ok(
-                userResponseDTOMapper.toUserResponse(userDetails)
+                userResponseDTOMapper.toDTO(userDetails)
         );
     }
 
@@ -40,7 +40,7 @@ public class UserApiDelegateApiV1Impl implements UserV1ApiDelegate {
     @Override
     public ResponseEntity<UserResponsePaginatedDTO> getUserByCriteria(UserCriteria criteria, Pageable pageable) {
         var userResponseDTOS = userService.findByCriteria(criteria, pageable)
-                .map(userResponseDTOMapper::toUserResponse);
+                .map(userResponseDTOMapper::toDTO);
         return ResponseEntity.ok(
                 UserResponsePaginatedDTO.builder()
                         .payload(userResponseDTOS.getContent())
