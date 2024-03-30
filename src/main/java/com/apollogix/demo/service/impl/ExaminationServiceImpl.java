@@ -5,13 +5,17 @@ import com.apollogix.demo.mapper.ExaminationRequestDTOMapper;
 import com.apollogix.demo.mapper.ExaminationResponseDTOMapper;
 import com.apollogix.demo.repository.ExaminationRepository;
 import com.apollogix.demo.repository.QuestionRepository;
+import com.apollogix.demo.repository.predicate.ExaminationPredicates;
 import com.apollogix.demo.service.ExaminationService;
 import com.apollogix.web.rest.model.BaseDTO;
+import com.apollogix.web.rest.model.ExaminationCriteria;
 import com.apollogix.web.rest.model.ExaminationRequestDTO;
 import com.apollogix.web.rest.model.ExaminationResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -45,6 +49,13 @@ public class ExaminationServiceImpl implements ExaminationService {
         }
         examination.setQuestions(existingQuestions);
         return examinationResponseDTOMapper.toDTO(examinationRepository.save(examination));
+    }
+
+    @Override
+    public Page<ExaminationResponseDTO> findByCriteria(ExaminationCriteria criteria, Pageable pageable) {
+        var predicate = ExaminationPredicates.byCriteria(criteria);
+        return examinationRepository.findAll(predicate, pageable)
+                .map(examinationResponseDTOMapper::toDTO);
     }
 
 }

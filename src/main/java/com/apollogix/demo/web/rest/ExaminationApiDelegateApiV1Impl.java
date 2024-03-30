@@ -3,12 +3,17 @@ package com.apollogix.demo.web.rest;
 import com.apollogix.demo.config.AuthoritiesConstants;
 import com.apollogix.demo.service.ExaminationService;
 import com.apollogix.web.rest.api.ExaminationV1ApiDelegate;
+import com.apollogix.web.rest.model.ExaminationCriteria;
 import com.apollogix.web.rest.model.ExaminationRequestDTO;
 import com.apollogix.web.rest.model.ExaminationResponseDTO;
+import com.apollogix.web.rest.model.ExaminationResponsePaginatedDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
+
+import static com.apollogix.demo.util.RestResponseUtil.fromPage;
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +26,18 @@ public class ExaminationApiDelegateApiV1Impl implements ExaminationV1ApiDelegate
     public ResponseEntity<ExaminationResponseDTO> createExaminationUsingPost(ExaminationRequestDTO examinationRequestDTO) {
         return ResponseEntity.ok(
                 examinationService.createExamination(examinationRequestDTO)
+        );
+    }
+
+    @Secured({AuthoritiesConstants.TEACHER})
+    @Override
+    public ResponseEntity<ExaminationResponsePaginatedDTO> getExaminationByCriteria(ExaminationCriteria criteria, Pageable pageable) {
+        var pages = examinationService.findByCriteria(criteria, pageable);
+        return ResponseEntity.ok(
+                ExaminationResponsePaginatedDTO.builder()
+                        .pagination(fromPage(pages))
+                        .payload(pages.getContent())
+                        .build()
         );
     }
 }
