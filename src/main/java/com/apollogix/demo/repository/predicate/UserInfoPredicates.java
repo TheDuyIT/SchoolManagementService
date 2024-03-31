@@ -1,7 +1,7 @@
 package com.apollogix.demo.repository.predicate;
 
 import com.apollogix.demo.domain.QUserInfo;
-import com.apollogix.demo.domain.Role;
+import com.apollogix.demo.domain.enums.Role;
 import com.apollogix.web.rest.model.UserCriteria;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;

@@ -3,6 +3,8 @@ package com.apollogix.demo.service.impl;
 import com.apollogix.demo.domain.Question;
 import com.apollogix.demo.domain.UserExamination;
 import com.apollogix.demo.domain.UserInfo;
+import com.apollogix.demo.domain.enums.ExamStatus;
+import com.apollogix.demo.mapper.ExaminationNonCorrectAnswerResponseDTOMapper;
 import com.apollogix.demo.mapper.ExaminationRequestDTOMapper;
 import com.apollogix.demo.mapper.ExaminationResponseDTOMapper;
 import com.apollogix.demo.mapper.UserResponseDTOMapper;
@@ -12,11 +14,13 @@ import com.apollogix.demo.repository.UserExaminationRepository;
 import com.apollogix.demo.repository.UserInfoRepository;
 import com.apollogix.demo.repository.predicate.ExaminationPredicates;
 import com.apollogix.demo.service.ExaminationService;
+import com.apollogix.demo.util.SecurityUtil;
 import com.apollogix.web.rest.model.ExaminationAssignmentRequestDTO;
 import com.apollogix.web.rest.model.ExaminationAssignmentResponseDTO;
 import com.apollogix.web.rest.model.ExaminationCriteria;
 import com.apollogix.web.rest.model.ExaminationRequestDTO;
 import com.apollogix.web.rest.model.ExaminationResponseDTO;
+import com.apollogix.web.rest.model.ExaminationStudentResponsePaginatedDTO;
 import com.apollogix.web.rest.model.IdWrapperDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -31,6 +35,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.apollogix.demo.util.RestResponseUtil.fromPage;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -43,6 +49,7 @@ public class ExaminationServiceImpl implements ExaminationService {
     private final UserInfoRepository userInfoRepository;
     private final UserExaminationRepository userExaminationRepository;
     private final UserResponseDTOMapper userResponseDTOMapper;
+    private final ExaminationNonCorrectAnswerResponseDTOMapper examinationNonCorrectAnswerResponseDTOMapper;
 
 
     @Override
@@ -92,7 +99,7 @@ public class ExaminationServiceImpl implements ExaminationService {
             throw new EntityNotFoundException("Students not found with IDs: " + requestedStudentIds);
         }
         var userExaminations = existingStudents.stream()
-                .map(student -> UserExamination.builder().user(student).examination(examination).build())
+                .map(student -> UserExamination.builder().user(student).examination(examination).status(ExamStatus.INITIAL).build())
                 .collect(Collectors.toSet());
         var savedUserExaminations = (List<UserExamination>) userExaminationRepository.saveAll(userExaminations);
         var savedExamination = savedUserExaminations.stream()
@@ -109,6 +116,26 @@ public class ExaminationServiceImpl implements ExaminationService {
                 .students(savedStudents.stream()
                         .map(userResponseDTOMapper::toDTO)
                         .collect(Collectors.toList()))
+                .build();
+    }
+
+    @Override
+    public ExaminationStudentResponsePaginatedDTO fetchExaminationNonCorrectAnswerUsingGet(Pageable pageable) {
+        UserInfo user = SecurityUtil.getCurrentUser();
+        if (user == null) return null;
+
+        var userExaminationsPage = userExaminationRepository.findByUser(user, pageable);
+        var examinationDTOs = userExaminationsPage.getContent()
+                .stream()
+                .map(userExam -> {
+                    var exam = examinationNonCorrectAnswerResponseDTOMapper.toDTO(userExam.getExamination());
+                    exam.setStatus(userExam.getStatus().name());
+                    return exam;
+                })
+                .toList();
+        return ExaminationStudentResponsePaginatedDTO.builder()
+                .payload(examinationDTOs)
+                .pagination(fromPage(userExaminationsPage))
                 .build();
     }
 }

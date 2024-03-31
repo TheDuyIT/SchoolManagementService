@@ -281,6 +281,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExaminationAssignmentResponseDTO'
+  /api/v1/examination/fetch: # role student only return examination with non-correctAnswer's question, otherwise teacher.
+    get:
+      description: student fetch their assign's examination
+      operationId: fetchExaminationNonCorrectAnswerUsingGet
+      tags:
+        - 'examination-v1'
+      parameters:
+        - $ref: '#/components/parameters/pageable'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExaminationStudentResponsePaginatedDTO'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -543,6 +565,8 @@ components:
         - $ref: "#/components/schemas/ExaminationBaseDTO"
         - type: object
           properties:
+            status:
+              type: string
             questions:
               type: array
               items:
@@ -601,4 +625,3 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/ExaminationNonCorrectAnswerResponseDTO"
-

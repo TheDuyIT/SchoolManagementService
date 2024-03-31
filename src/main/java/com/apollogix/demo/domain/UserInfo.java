@@ -1,5 +1,6 @@
 package com.apollogix.demo.domain;
 
+import com.apollogix.demo.domain.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

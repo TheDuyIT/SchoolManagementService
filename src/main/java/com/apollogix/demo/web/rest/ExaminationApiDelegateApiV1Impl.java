@@ -51,4 +51,12 @@ public class ExaminationApiDelegateApiV1Impl implements ExaminationV1ApiDelegate
                 examinationService.assignExaminationForStudent(examinationAssignmentRequestDTO)
         );
     }
+
+    @Secured({AuthoritiesConstants.STUDENT})
+    @Override
+    public ResponseEntity<ExaminationStudentResponsePaginatedDTO> fetchExaminationNonCorrectAnswerUsingGet(Pageable pageable) {
+        return ResponseEntity.ok(
+                examinationService.fetchExaminationNonCorrectAnswerUsingGet(pageable)
+        );
+    }
 }

@@ -1,6 +1,6 @@
 package com.apollogix.demo.service.impl;
 
-import com.apollogix.demo.domain.Role;
+import com.apollogix.demo.domain.enums.Role;
 import com.apollogix.demo.domain.UserInfo;
 import com.apollogix.demo.mapper.RegisterRequestMapper;
 import com.apollogix.demo.mapper.UserResponseDTOMapper;

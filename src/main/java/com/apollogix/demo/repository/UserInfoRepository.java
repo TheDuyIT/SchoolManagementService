@@ -1,6 +1,6 @@
 package com.apollogix.demo.repository;
 
-import com.apollogix.demo.domain.Role;
+import com.apollogix.demo.domain.enums.Role;
 import com.apollogix.demo.domain.UserInfo;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
