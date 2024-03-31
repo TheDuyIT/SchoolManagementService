@@ -1,4 +1,4 @@
-package com.apollogix.demo.domain;
+package com.apollogix.demo.domain.enums;
 
 public enum Role {
     TEACHER,

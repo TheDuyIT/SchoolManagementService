@@ -10,14 +10,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,13 +33,7 @@ public class Examination extends BaseEntity{
     @Column(nullable = false)
     private String title;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "start_time", nullable = false)
-    private Date startTime;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "end_time", nullable = false)
-    private Date endTime;
+    private Integer durationInMinute;
 
     @ManyToMany
     @JoinTable(name = "examination_question",
