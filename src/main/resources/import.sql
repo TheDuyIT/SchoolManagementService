@@ -50,3 +50,5 @@ INSERT INTO public.question (id, clause, answer_a, answer_b, answer_c, answer_d,
 -- Question 20
 INSERT INTO public.question (id, clause, answer_a, answer_b, answer_c, answer_d, correct_answer, created_at, updated_at, created_by, updated_by, version) VALUES (20, 'What is the value of the cosine of 60 degrees (rounded to two decimal places)?', '0.50', '0.60', '0.70', '0.80', 0, now(), now(), 'SYSTEM', 'SYSTEM', 0);
 
+-- Examination
+INSERT INTO public.examination (duration_in_minute, version, created_at, id, updated_at, created_by, title, updated_by) VALUES (20, 0, '2024-03-31 21:15:10.920460', 1, '2024-03-31 21:15:10.920460', 'teacher1@gmail.com', 'Examination name hihi', 'teacher1@gmail.com');

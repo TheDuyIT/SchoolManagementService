@@ -257,6 +257,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExaminationResponseDTO'
+  /api/v1/examination/assign:
+    post:
+      description: assign examination for students
+      operationId: assignExaminationForStudent
+      tags:
+        - 'examination-v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExaminationAssignmentRequestDTO'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExaminationAssignmentResponseDTO'
 components:
   securitySchemes:
     bearerAuth:
@@ -348,6 +372,11 @@ components:
                 $ref: "#/components/schemas/UserResponseDTO"
     UserResponseDTO:
       type: object
+      allOf:
+        - $ref: "#/components/schemas/BaseDTO"
+        - $ref: "#/components/schemas/UserBaseDTO"
+    UserBaseDTO:
+      type: object
       properties:
         firstname:
           type: string
@@ -394,13 +423,18 @@ components:
       enum:
         - TEACHER
         - STUDENT
-    BaseDTO:
+
+    IdWrapperDTO:
       type: object
       properties:
         id:
           type: integer
           format: int64
-    QuestionBaseDTO:
+    BaseDTO:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/IdWrapperDTO"
+    QuestionNonCorrectAnswerBaseDTO:
       type: object
       properties:
         clause:
@@ -413,11 +447,17 @@ components:
           type: string
         answerD:
           type: string
-        correctAnswer:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 3
+    QuestionBaseDTO:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/QuestionNonCorrectAnswerBaseDTO"
+        - type: object
+          properties:
+            correctAnswer:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 3
     QuestionResponsePaginatedDTO:
       type: object
       allOf:
@@ -437,6 +477,11 @@ components:
       allOf:
         - $ref: "#/components/schemas/BaseDTO"
         - $ref: "#/components/schemas/QuestionBaseDTO"
+    QuestionNonCorrectAnswerResponseDTO:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/BaseDTO"
+        - $ref: "#/components/schemas/QuestionNonCorrectAnswerBaseDTO"
     QuestionCriteria:
       type: object
       properties:
@@ -479,10 +524,11 @@ components:
             questions:
               type: array
               items:
-                $ref: "#/components/schemas/BaseDTO"
+                $ref: "#/components/schemas/IdWrapperDTO"
     ExaminationResponseDTO:
       type: object
       allOf:
+        - $ref: "#/components/schemas/BaseDTO"
         - $ref: "#/components/schemas/ExaminationBaseDTO"
         - type: object
           properties:
@@ -490,6 +536,17 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/QuestionResponseDTO"
+    ExaminationNonCorrectAnswerResponseDTO:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/BaseDTO"
+        - $ref: "#/components/schemas/ExaminationBaseDTO"
+        - type: object
+          properties:
+            questions:
+              type: array
+              items:
+                $ref: "#/components/schemas/QuestionNonCorrectAnswerResponseDTO"
     ExaminationCriteria:
       type: object
       properties:
@@ -511,3 +568,37 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/ExaminationResponseDTO"
+
+    ExaminationAssignmentRequestDTO:
+      type: object
+      properties:
+        examination:
+          $ref: "#/components/schemas/IdWrapperDTO"
+        students:
+          type: array
+          items:
+            $ref: "#/components/schemas/IdWrapperDTO"
+    ExaminationAssignmentResponseDTO:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/BaseDTO"
+        - type: object
+          properties:
+            examination:
+              $ref: "#/components/schemas/ExaminationResponseDTO"
+            students:
+              type: array
+              items:
+                $ref: "#/components/schemas/UserResponseDTO"
+
+    ExaminationStudentResponsePaginatedDTO:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/RestResponse'
+        - type: object
+          properties:
+            payload:
+              type: array
+              items:
+                $ref: "#/components/schemas/ExaminationNonCorrectAnswerResponseDTO"
+

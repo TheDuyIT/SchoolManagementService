@@ -3,10 +3,13 @@ package com.apollogix.demo.web.rest;
 import com.apollogix.demo.config.AuthoritiesConstants;
 import com.apollogix.demo.service.ExaminationService;
 import com.apollogix.web.rest.api.ExaminationV1ApiDelegate;
+import com.apollogix.web.rest.model.ExaminationAssignmentRequestDTO;
+import com.apollogix.web.rest.model.ExaminationAssignmentResponseDTO;
 import com.apollogix.web.rest.model.ExaminationCriteria;
 import com.apollogix.web.rest.model.ExaminationRequestDTO;
 import com.apollogix.web.rest.model.ExaminationResponseDTO;
 import com.apollogix.web.rest.model.ExaminationResponsePaginatedDTO;
+import com.apollogix.web.rest.model.ExaminationStudentResponsePaginatedDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +41,14 @@ public class ExaminationApiDelegateApiV1Impl implements ExaminationV1ApiDelegate
                         .pagination(fromPage(pages))
                         .payload(pages.getContent())
                         .build()
+        );
+    }
+
+    @Secured({AuthoritiesConstants.TEACHER})
+    @Override
+    public ResponseEntity<ExaminationAssignmentResponseDTO> assignExaminationForStudent(ExaminationAssignmentRequestDTO examinationAssignmentRequestDTO) {
+        return ResponseEntity.ok(
+                examinationService.assignExaminationForStudent(examinationAssignmentRequestDTO)
         );
     }
 }
