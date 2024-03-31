@@ -132,6 +132,7 @@ public class ExaminationServiceImpl implements ExaminationService {
                 .map(userExam -> {
                     var exam = examinationWithoutAnswerResponseDTOMapper.toDTO(userExam.getExamination());
                     exam.setStatus(userExam.getStatus().name());
+                    if(EnumUtils.getEnum(ExamStatus.class, exam.getStatus()) == ExamStatus.INITIAL) exam.setQuestions(null);
                     return exam;
                 })
                 .toList();
