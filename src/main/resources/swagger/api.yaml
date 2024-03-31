@@ -323,6 +323,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExaminationWithoutAnswerResponseDTO'
+  /api/v1/examination/{id}/submit:
+    post:
+      description: student submit a examination
+      operationId: submitExamination
+      tags:
+        - 'examination-v1'
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SubmitExaminationRequestDTO'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitExaminationResponseDTO'
 components:
   securitySchemes:
     bearerAuth:
@@ -578,15 +606,6 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/QuestionResponseDTO"
-    # ExaminationWithoutQuestionResponseDTO:
-    #   type: object
-    #   allOf:
-    #     - $ref: "#/components/schemas/BaseDTO"
-    #     - $ref: "#/components/schemas/ExaminationBaseDTO"
-    #     - type: object
-    #       properties:
-    #         status:
-    #           type: string
     ExaminationWithoutAnswerResponseDTO:
       type: object
       allOf:
@@ -655,3 +674,17 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/ExaminationWithoutAnswerResponseDTO"
+    SubmitExaminationRequestDTO:
+      type: object
+      properties:
+        questionId:
+          type: integer
+          format: int64
+        answer:
+          type: integer
+          format: int32
+    SubmitExaminationResponseDTO:
+      type: object
+      properties:
+        score:
+          type: number

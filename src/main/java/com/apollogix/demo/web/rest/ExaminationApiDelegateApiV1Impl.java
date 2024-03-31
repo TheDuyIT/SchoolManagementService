@@ -11,11 +11,16 @@ import com.apollogix.web.rest.model.ExaminationResponseDTO;
 import com.apollogix.web.rest.model.ExaminationResponsePaginatedDTO;
 import com.apollogix.web.rest.model.ExaminationStudentResponsePaginatedDTO;
 import com.apollogix.web.rest.model.ExaminationWithoutAnswerResponseDTO;
+import com.apollogix.web.rest.model.SubmitExaminationRequestDTO;
+import com.apollogix.web.rest.model.SubmitExaminationResponseDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import static com.apollogix.demo.util.RestResponseUtil.fromPage;
 
@@ -66,5 +71,12 @@ public class ExaminationApiDelegateApiV1Impl implements ExaminationV1ApiDelegate
     public ResponseEntity<ExaminationWithoutAnswerResponseDTO> startExamination(Long examinationId) {
         var responseDTO = examinationService.startExamination(examinationId);
         return ResponseEntity.ofNullable(responseDTO);
+    }
+
+    @Override
+    public ResponseEntity<SubmitExaminationResponseDTO> submitExamination(Long id, List<@Valid SubmitExaminationRequestDTO> requestDTO) {
+        return ResponseEntity.ok(
+                examinationService.submitExamination(id, requestDTO)
+        );
     }
 }
