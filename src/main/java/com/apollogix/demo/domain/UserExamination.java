@@ -2,6 +2,8 @@ package com.apollogix.demo.domain;
 
 import com.apollogix.demo.domain.enums.ExamStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,6 +30,7 @@ public class UserExamination extends BaseEntity{
     private Long id;
 
     private double score;
+    @Enumerated(EnumType.STRING)
     private ExamStatus status;
     private LocalDateTime startDoingTime;
     private LocalDateTime doneTime;

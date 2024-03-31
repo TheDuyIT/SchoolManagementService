@@ -6,6 +6,7 @@ import com.apollogix.web.rest.model.ExaminationCriteria;
 import com.apollogix.web.rest.model.ExaminationRequestDTO;
 import com.apollogix.web.rest.model.ExaminationResponseDTO;
 import com.apollogix.web.rest.model.ExaminationStudentResponsePaginatedDTO;
+import com.apollogix.web.rest.model.ExaminationWithoutAnswerResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,4 +18,6 @@ public interface ExaminationService {
     ExaminationAssignmentResponseDTO assignExaminationForStudent(ExaminationAssignmentRequestDTO requestDTO);
 
     ExaminationStudentResponsePaginatedDTO fetchExaminationNonCorrectAnswerUsingGet(Pageable pageable);
+
+    ExaminationWithoutAnswerResponseDTO startExamination(Long examinationId);
 }

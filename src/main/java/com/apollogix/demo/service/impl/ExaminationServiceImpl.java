@@ -4,9 +4,9 @@ import com.apollogix.demo.domain.Question;
 import com.apollogix.demo.domain.UserExamination;
 import com.apollogix.demo.domain.UserInfo;
 import com.apollogix.demo.domain.enums.ExamStatus;
-import com.apollogix.demo.mapper.ExaminationNonCorrectAnswerResponseDTOMapper;
 import com.apollogix.demo.mapper.ExaminationRequestDTOMapper;
 import com.apollogix.demo.mapper.ExaminationResponseDTOMapper;
+import com.apollogix.demo.mapper.ExaminationWithoutAnswerResponseDTOMapper;
 import com.apollogix.demo.mapper.UserResponseDTOMapper;
 import com.apollogix.demo.repository.ExaminationRepository;
 import com.apollogix.demo.repository.QuestionRepository;
@@ -21,14 +21,17 @@ import com.apollogix.web.rest.model.ExaminationCriteria;
 import com.apollogix.web.rest.model.ExaminationRequestDTO;
 import com.apollogix.web.rest.model.ExaminationResponseDTO;
 import com.apollogix.web.rest.model.ExaminationStudentResponsePaginatedDTO;
+import com.apollogix.web.rest.model.ExaminationWithoutAnswerResponseDTO;
 import com.apollogix.web.rest.model.IdWrapperDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -49,8 +52,7 @@ public class ExaminationServiceImpl implements ExaminationService {
     private final UserInfoRepository userInfoRepository;
     private final UserExaminationRepository userExaminationRepository;
     private final UserResponseDTOMapper userResponseDTOMapper;
-    private final ExaminationNonCorrectAnswerResponseDTOMapper examinationNonCorrectAnswerResponseDTOMapper;
-
+    private final ExaminationWithoutAnswerResponseDTOMapper examinationWithoutAnswerResponseDTOMapper;
 
     @Override
     public ExaminationResponseDTO createExamination(ExaminationRequestDTO requestDTO) {
@@ -80,11 +82,11 @@ public class ExaminationServiceImpl implements ExaminationService {
 
     @Override
     public ExaminationAssignmentResponseDTO assignExaminationForStudent(ExaminationAssignmentRequestDTO requestDTO) {
-        Objects.requireNonNull(requestDTO.getExamination(), "Field examination must not be null");
+        Objects.requireNonNull(requestDTO.getExaminationId(), "Field examinationId must not be null");
         Collection<IdWrapperDTO> students = requestDTO.getStudents();
         Objects.requireNonNull(students, "Field students must not be null");
 
-        var examination = examinationRepository.findById(requestDTO.getExamination().getId())
+        var examination = examinationRepository.findById(requestDTO.getExaminationId())
                 .orElseThrow(() -> new EntityNotFoundException("Examination not found"));
 
         var requestedStudentIds = students.stream()
@@ -128,7 +130,7 @@ public class ExaminationServiceImpl implements ExaminationService {
         var examinationDTOs = userExaminationsPage.getContent()
                 .stream()
                 .map(userExam -> {
-                    var exam = examinationNonCorrectAnswerResponseDTOMapper.toDTO(userExam.getExamination());
+                    var exam = examinationWithoutAnswerResponseDTOMapper.toDTO(userExam.getExamination());
                     exam.setStatus(userExam.getStatus().name());
                     return exam;
                 })
@@ -137,5 +139,25 @@ public class ExaminationServiceImpl implements ExaminationService {
                 .payload(examinationDTOs)
                 .pagination(fromPage(userExaminationsPage))
                 .build();
+    }
+
+    @Override
+    public ExaminationWithoutAnswerResponseDTO startExamination(Long examinationId) {
+        UserInfo user = SecurityUtil.getCurrentUser();
+        if (user == null) return null;
+
+        var userExam = userExaminationRepository.findByUserAndExamination_IdAndStatus(user, examinationId, ExamStatus.INITIAL)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                String.format("No examination with Id %d and status %s is assigned to user with email %s!",
+                                        examinationId, ExamStatus.INITIAL, user.getEmail())
+                        )
+                );
+        userExam.setStartDoingTime(LocalDateTime.now());
+        userExam.setStatus(ExamStatus.DOING);
+        userExaminationRepository.save(userExam);
+        var responseDTO = examinationWithoutAnswerResponseDTOMapper.toDTO(userExam.getExamination());
+        responseDTO.setStatus(userExam.getStatus().name());
+        return responseDTO;
     }
 }

@@ -10,6 +10,7 @@ import com.apollogix.web.rest.model.ExaminationRequestDTO;
 import com.apollogix.web.rest.model.ExaminationResponseDTO;
 import com.apollogix.web.rest.model.ExaminationResponsePaginatedDTO;
 import com.apollogix.web.rest.model.ExaminationStudentResponsePaginatedDTO;
+import com.apollogix.web.rest.model.ExaminationWithoutAnswerResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +59,12 @@ public class ExaminationApiDelegateApiV1Impl implements ExaminationV1ApiDelegate
         return ResponseEntity.ok(
                 examinationService.fetchExaminationNonCorrectAnswerUsingGet(pageable)
         );
+    }
+
+    @Secured({AuthoritiesConstants.STUDENT})
+    @Override
+    public ResponseEntity<ExaminationWithoutAnswerResponseDTO> startExamination(Long examinationId) {
+        var responseDTO = examinationService.startExamination(examinationId);
+        return ResponseEntity.ofNullable(responseDTO);
     }
 }

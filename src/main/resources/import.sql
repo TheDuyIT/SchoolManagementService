@@ -62,7 +62,7 @@ INSERT INTO public.examination_question (examination_id, question_id) VALUES (1,
 
 
 -- UserExamination
-INSERT INTO public.user_examination (score, status, version, created_at, done_time, examination_id, id, start_doing_time, updated_at, user_id, created_by, updated_by) VALUES (0, 0, 0, '2024-03-31 23:21:23.138221', null, 1, 1, null, '2024-03-31 23:21:23.138221', 5, 'teacher1@gmail.com', 'teacher1@gmail.com');
-INSERT INTO public.user_examination (score, status, version, created_at, done_time, examination_id, id, start_doing_time, updated_at, user_id, created_by, updated_by) VALUES (0, 0, 0, '2024-03-31 23:21:23.144672', null, 1, 2, null, '2024-03-31 23:21:23.144672', 7, 'teacher1@gmail.com', 'teacher1@gmail.com');
-INSERT INTO public.user_examination (score, status, version, created_at, done_time, examination_id, id, start_doing_time, updated_at, user_id, created_by, updated_by) VALUES (0, 0, 0, '2024-03-31 23:21:23.144672', null, 1, 3, null, '2024-03-31 23:21:23.144672', 6, 'teacher1@gmail.com', 'teacher1@gmail.com');
+INSERT INTO public.user_examination (score, status, version, created_at, done_time, examination_id, id, start_doing_time, updated_at, user_id, created_by, updated_by) VALUES (0, 'INITIAL', 0, '2024-03-31 23:21:23.138221', null, 1, 1, null, '2024-03-31 23:21:23.138221', 5, 'teacher1@gmail.com', 'teacher1@gmail.com');
+INSERT INTO public.user_examination (score, status, version, created_at, done_time, examination_id, id, start_doing_time, updated_at, user_id, created_by, updated_by) VALUES (0, 'INITIAL', 0, '2024-03-31 23:21:23.144672', null, 1, 2, null, '2024-03-31 23:21:23.144672', 7, 'teacher1@gmail.com', 'teacher1@gmail.com');
+INSERT INTO public.user_examination (score, status, version, created_at, done_time, examination_id, id, start_doing_time, updated_at, user_id, created_by, updated_by) VALUES (0, 'INITIAL', 0, '2024-03-31 23:21:23.144672', null, 1, 3, null, '2024-03-31 23:21:23.144672', 6, 'teacher1@gmail.com', 'teacher1@gmail.com');
 

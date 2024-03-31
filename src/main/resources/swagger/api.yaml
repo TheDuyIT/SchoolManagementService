@@ -302,7 +302,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExaminationStudentResponsePaginatedDTO'
-
+  /api/v1/examination/{id}/start:
+    post:
+      description: student start a examination
+      operationId: startExamination
+      tags:
+        - 'examination-v1'
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        400:
+          description: Bad request
+        404:
+          description: Resource not found
+        417:
+          description: Failed to upload attachments
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExaminationWithoutAnswerResponseDTO'
 components:
   securitySchemes:
     bearerAuth:
@@ -314,8 +334,8 @@ components:
       in: path
       required: true
       schema:
-        type: string
-        format: uuid
+        type: integer
+        format: int64
     pageable:
       name: pageable
       in: query
@@ -558,7 +578,16 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/QuestionResponseDTO"
-    ExaminationNonCorrectAnswerResponseDTO:
+    # ExaminationWithoutQuestionResponseDTO:
+    #   type: object
+    #   allOf:
+    #     - $ref: "#/components/schemas/BaseDTO"
+    #     - $ref: "#/components/schemas/ExaminationBaseDTO"
+    #     - type: object
+    #       properties:
+    #         status:
+    #           type: string
+    ExaminationWithoutAnswerResponseDTO:
       type: object
       allOf:
         - $ref: "#/components/schemas/BaseDTO"
@@ -596,8 +625,9 @@ components:
     ExaminationAssignmentRequestDTO:
       type: object
       properties:
-        examination:
-          $ref: "#/components/schemas/IdWrapperDTO"
+        examinationId:
+          type: integer
+          format: int64
         students:
           type: array
           items:
@@ -624,4 +654,4 @@ components:
             payload:
               type: array
               items:
-                $ref: "#/components/schemas/ExaminationNonCorrectAnswerResponseDTO"
+                $ref: "#/components/schemas/ExaminationWithoutAnswerResponseDTO"
