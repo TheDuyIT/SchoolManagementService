@@ -25,7 +25,13 @@ cd school-management
 ### 2. Docker compose
 
 Run docker compose to start the service
+
 ```bash
 docker compose up
 ```
 
+The service will be exposed on port 8080.
+
+### 3. Test the apis
+
+Import file Apollogix.postman_collection.json into postman for api testing

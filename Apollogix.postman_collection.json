@@ -1,0 +1,1102 @@
+{
+	"info": {
+		"_postman_id": "701346b3-2c42-49bb-b94a-e39c7e3a3a59",
+		"name": "Apollogix",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20473616"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "auth",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// curl --location 'http://localhost:8080/api/v1/auth' \\\r",
+									"// --header 'Content-Type: application/json' \\\r",
+									"// --data-raw '{\r",
+									"//     \"email\": \"theduyit@gmail.com\",\r",
+									"//     \"password\": \"pwd\"\r",
+									"// }'"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"pwd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"admin@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"hoc sinh\",\r\n    \"lastname\" : \"so 3\",\r\n    \"email\": \"student4@gmail.com\",\r\n    \"role\": \"STUDENT\",\r\n    \"password\": \"pwd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"admin@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"hoc sinh\",\r\n    \"lastname\" : \"so 2\",\r\n    \"email\": \"student2@gmail.com\",\r\n    \"role\": \"STUDENT\",\r\n    \"password\": \"pwd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "hello",
+			"item": [
+				{
+					"name": "hello_teacher",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"admin@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hello/teacher",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hello",
+								"teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hello_student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/hello/student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"hello",
+								"student"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "assign-role",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"admin@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 2,\r\n    \"role\": \"TEACHER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/user/assign-role",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"assign-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find-by-criteria",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"admin@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/user?sort=email%2Cdesc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "admin@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "email%2Cdesc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "question",
+			"item": [
+				{
+					"name": "get-by-criteria",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"student1@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/question?size=10&page=0&sort=correctAnswer%2CDESC",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"question"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "correctAnswer",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "correctAnswer%2CDESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"teacher1@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clause\": \"Who is the richest man in the world?\",\r\n    \"answerA\": \"Mark Zuckerberg\",\r\n    \"answerB\": \"Bill Gate\",\r\n    \"answerC\": \"Jeff Bezos\",\r\n    \"answerD\": \"Elon Musk\",\r\n    \"correctAnswer\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/question",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"question"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "examination",
+			"item": [
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"teacher1@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Examination name hihi\",\r\n    \"durationInMinute\": 20,\r\n    \"questions\": [\r\n        1, 3, 4, 10\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/examination",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"examination"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign-student-to-exams",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"teacher1@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"examination\": {\r\n        \"id\": 1\r\n    },\r\n    \"students\": [\r\n        5,\r\n        6,\r\n        7\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/examination/assign",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"examination",
+								"assign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-by-criteria",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"teacher1@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/examination?durationInMinute=19",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"examination"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "hihi",
+									"disabled": true
+								},
+								{
+									"key": "durationInMinute",
+									"value": "19"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student-fetch-axam",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"student3@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/examination/fetch",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"examination",
+								"fetch"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "hihi",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "studen-start-exam",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"student3@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/examination/1/start",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"examination",
+								"1",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "studen-submit-exam",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"  url: 'http://localhost:8080/api/v1/auth',\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"    mode: 'raw',\r",
+									"    raw: JSON.stringify({\r",
+									"      \"email\": \"student3@gmail.com\",\r",
+									"      \"password\": \"pwd\"\r",
+									"    })\r",
+									"  }\r",
+									"}, function (err, res) {\r",
+									"  if (err) {\r",
+									"    console.error(err);\r",
+									"    return;\r",
+									"  }\r",
+									"  const jsonResponse = res.json();\r",
+									"  pm.environment.set('access_token', jsonResponse.token);\r",
+									"  console.log(res.json());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"questionId\": 4,\r\n        \"clause\": \"What is the result of 8 multiplied by 7?\",\r\n        \"answer\": 1\r\n    },\r\n    {\r\n        \"questionId\": 10,\r\n        \"clause\": \"What is the value of 2 to the power of 10?\",\r\n        \"answer\": 0\r\n    },\r\n    {\r\n        \"questionId\": 3,\r\n        \"clause\": \"What is the value of pi (π) to two decimal places?\",\r\n        \"answer\": 1\r\n    },\r\n    {\r\n        \"questionId\": 1,\r\n        \"clause\": \"What is the result of 5 + 3?\",\r\n        \"answer\": 3\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/examination/1/submit",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"examination",
+								"1",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"// pm.sendRequest({\r",
+					"//   url: 'http://localhost:8080/api/v1/auth',\r",
+					"//   method: 'POST',\r",
+					"//   header: {\r",
+					"//     'Content-Type': 'application/json'\r",
+					"//   },\r",
+					"//   body: {\r",
+					"//     mode: 'raw',\r",
+					"//     raw: JSON.stringify({\r",
+					"//       \"email\": \"theduyit@gmail.com\",\r",
+					"//       \"password\": \"pwd\"\r",
+					"//     })\r",
+					"//   }\r",
+					"// }, function (err, res) {\r",
+					"//   if (err) {\r",
+					"//     console.error(err);\r",
+					"//     return;\r",
+					"//   }\r",
+					"//   const jsonResponse = res.json();\r",
+					"//   pm.environment.set('access_token', jsonResponse.token);\r",
+					"//   console.log(res.json());\r",
+					"// });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
