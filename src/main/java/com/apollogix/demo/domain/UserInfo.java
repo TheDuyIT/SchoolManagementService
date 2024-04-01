@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,10 +34,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserInfo extends BaseEntity implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorUserInfo")
+    @SequenceGenerator(name = "sequenceGeneratorUserInfo", sequenceName = "sequence_generator_user_info",
+            allocationSize = 1, initialValue = 100)
     private Long id;
     private String firstname;
     private String lastname;
+
     @Column(unique = true)
     private String email;
     private String password;

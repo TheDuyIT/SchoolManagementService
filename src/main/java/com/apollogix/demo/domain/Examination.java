@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,10 +25,12 @@ import java.util.Set;
 @Table
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Examination extends BaseEntity{
+public class Examination extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorExamination")
+    @SequenceGenerator(name = "sequenceGeneratorExamination", sequenceName = "sequence_generator_examination",
+            allocationSize = 1, initialValue = 100)
     private Long id;
 
     @Column(nullable = false)

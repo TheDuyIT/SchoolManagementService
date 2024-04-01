@@ -22,7 +22,8 @@ public class Question extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorQuestion")
-    @SequenceGenerator(name = "sequenceGeneratorQuestion", sequenceName = "sequence_generator_question", allocationSize = 50,initialValue = 50)
+    @SequenceGenerator(name = "sequenceGeneratorQuestion", sequenceName = "sequence_generator_question",
+            allocationSize = 1, initialValue = 100)
     private Long id;
 
     @Column(nullable = false)

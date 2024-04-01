@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,10 +24,12 @@ import java.time.LocalDateTime;
 @Table
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class UserExamination extends BaseEntity{
+public class UserExamination extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorUserExamination")
+    @SequenceGenerator(name = "sequenceGeneratorUserExamination", sequenceName = "sequence_generator_user_examination",
+            allocationSize = 1, initialValue = 100)
     private Long id;
 
     private double score;
