@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
         var user = registerRequestMapper.toUserInfo(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.STUDENT); // default user role
+        user.setRole(Enum.valueOf(Role.class, request.getRole().getValue()));
         user = userInfoRepository.save(user);
         return user;
     }

@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,9 @@ import lombok.RequiredArgsConstructor;
 public class UserQuestionAnswer extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceUserQuestionAnswer")
+    @SequenceGenerator(name = "sequenceGeneratorUserQuestionAnswer",
+            sequenceName = "sequence_generator_user_question_answer", allocationSize = 1, initialValue = 100)
     private Long id;
 
     @ManyToOne

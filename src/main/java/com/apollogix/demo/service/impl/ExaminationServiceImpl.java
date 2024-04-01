@@ -1,5 +1,6 @@
 package com.apollogix.demo.service.impl;
 
+import com.apollogix.demo.domain.Examination;
 import com.apollogix.demo.domain.Question;
 import com.apollogix.demo.domain.UserExamination;
 import com.apollogix.demo.domain.UserInfo;
@@ -106,6 +107,9 @@ public class ExaminationServiceImpl implements ExaminationService {
             requestedStudentIds.removeAll(foundQuestionIds);
             throw new EntityNotFoundException("Students not found with IDs: " + requestedStudentIds);
         }
+
+        existingStudents = filterOutStudentsAlreadyAssigned(existingStudents, examination);
+
         var userExaminations = existingStudents.stream()
                 .map(student -> UserExamination.builder().user(student).examination(examination).status(ExamStatus.INITIAL).build())
                 .collect(Collectors.toSet());
@@ -126,6 +130,16 @@ public class ExaminationServiceImpl implements ExaminationService {
                         .collect(Collectors.toList()))
                 .build();
     }
+
+    private HashSet<UserInfo> filterOutStudentsAlreadyAssigned(HashSet<UserInfo> existingStudents, Examination examination) {
+        var alreadyAssignedStudents =
+                userExaminationRepository.findByUserInAndExamination(existingStudents, examination).stream()
+                .map(UserExamination::getUser)
+                .collect(Collectors.toSet());
+        existingStudents.removeAll(alreadyAssignedStudents);
+        return existingStudents;
+    }
+
 
     @Override
     public ExaminationStudentResponsePaginatedDTO fetchExaminationNonCorrectAnswerUsingGet(Pageable pageable) {
